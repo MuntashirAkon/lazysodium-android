@@ -94,7 +94,7 @@ dependencies {
 task libsodium {
     doLast {
         println("=== libsodium: start ===")
-        File file = new File("${rootProject.projectDir.absolutePath}/app/src/main/jniLibs/arm64-v8a/libsodium.so")
+        File file = new File("${projectDir.absolutePath}/src/main/jniLibs/arm64-v8a/libsodium.so")
         if (!file.exists()) {
             buildLibsodium()
         } else {
@@ -107,7 +107,7 @@ task libsodium {
 task cleanLibsodium {
     doLast {
         println("=== libsodium: clean ===")
-        File file = new File("${rootProject.projectDir.absolutePath}/app/src/main/jniLibs")
+        File file = new File("${projectDir.absolutePath}/src/main/jniLibs")
         if (file.exists()) {
             deleteDir(file)
         }
@@ -116,12 +116,12 @@ task cleanLibsodium {
 
 def buildLibsodium() {
     def ndkPath = android.ndkDirectory
-    def buildExec = "${rootProject.projectDir.absolutePath}/build_libsodium.sh"
+    def buildExec = "${projectDir.absolutePath}/../build_libsodium.sh"
     def cmdArgs = [ndkPath]
     println("NDK Path: ${ndkPath}")
     println("Exec Path: ${buildExec}")
     exec {
-        workingDir = rootProject.projectDir.absolutePath
+        workingDir = "${projectDir.absolutePath}/../"
         executable = buildExec
         args = cmdArgs
     }
