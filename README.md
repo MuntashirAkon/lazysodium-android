@@ -43,12 +43,12 @@ You can find an up-to-date feature list [here](https://docs.lazycode.co/lazysodi
 This is by no means a comprehensive introduction to Lazysodium. Please view the [official documentation](https://docs.lazycode.co/lazysodium/usage/installation) for a more comprehensive guide.
 
 ### 1. Install
-Install by adding the `jcenter()` repository. For Maven users, please see [here](https://docs.lazycode.co/lazysodium/usage/installation).
+Lazysodium for Android is available via JitPack.
 
 ```groovy
 // Top level build file
 repositories {
-    jcenter()
+    maven { url "https://jitpack.io" }
 }
 
 // Add to dependencies section
