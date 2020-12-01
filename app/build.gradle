@@ -26,7 +26,6 @@ version = project.ext.version
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
-    ndkVersion "21.3.6528147"
 
     defaultConfig {
         minSdkVersion 19
