@@ -8,9 +8,9 @@
   
 Lazysodium is a **complete** Android implementation of the [Libsodium](https://github.com/jedisct1/libsodium) library that provides developers with a **smooth and effortless** cryptography experience.
 
-[![Build Status](https://dev.azure.com/gurpreetishere/Lazysodium/_apis/build/status/terl.lazysodium-android?branchName=master)](https://dev.azure.com/gurpreetishere/Lazysodium/_build/latest?definitionId=3&branchName=master)
-[![Download](https://api.bintray.com/packages/terl/lazysodium-maven/lazysodium-android/images/download.svg) ](https://bintray.com/terl/lazysodium-maven/lazysodium-android/_latestVersion)
+[![Download](https://jitpack.io/v/MuntashirAkon/lazysodium-android.svg)](https://jitpack.io/#MuntashirAkon/lazysodium-android)
 
+**NOTE:** This version removes all the non-free blobs from the original [lazysodium-android](https://github.com/terl/lazysodium-android) by Terl.
 
 ## Why Lazysodium
 We created Lazysodium because we really wanted a solid Libsodium compatible Java/Android library that would just work without fuss. We were exasperated and annoyed with current Libsodium implementations as some of them were just poorly maintained and poorly architected.
@@ -53,15 +53,10 @@ repositories {
 
 // Add to dependencies section
 dependencies {
-    implementation "com.goterl.lazycode:lazysodium-android:VERSION_NUMBER@aar"
-    implementation 'net.java.dev.jna:jna:5.5.0@aar'
+    implementation "com.github.MuntashirAkon:lazysodium-android:4.3.0@aar"
+    implementation 'net.java.dev.jna:jna:5.6.0@aar'
 }
 ```
-
-Substitute `VERSION_NUMBER` for the version in this box:
-
-[![Download](https://api.bintray.com/packages/terl/lazysodium-maven/lazysodium-android/images/download.svg) ](https://bintray.com/terl/lazysodium-maven/lazysodium-android/_latestVersion)
-
 
 ### 2. Let's go!
 
@@ -112,19 +107,5 @@ LazySodiumAndroid lazySodium = new LazySodiumAndroid(new SodiumAndroid(), encode
 
 See our [official documentation](https://docs.lazycode.co/lazysodium) to get started.
 
-## Apps
-
-You can preview some of the features in our free Lazysodium app available on Google Play:
-
-<a href='https://play.google.com/store/apps/details?id=com.goterl.lazycode.lazysodium.example&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_gb/badges/images/generic/en_badge_web_generic.png' width="140"/></a>
-
-
 ## Lazysodium for Java
 We also have a Java implementation available at [Lazysodium for Java](https://github.com/terl/lazysodium-java). It has the same API as this library so you can share code easily!
-
-
----
-
-<a href="https://terl.co"><img width="100" style="float: left: display: inline;" src="https://filedn.com/lssh2fV92SE8dRT5CWJvvSy/terl.png" /></a>
-
-Created by [Terl](https://terl.co).
