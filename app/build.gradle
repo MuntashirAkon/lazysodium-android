@@ -8,17 +8,12 @@
  * file, you can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-plugins {
-    id 'com.android.library'
-    id 'maven-publish'
-    id 'signing'
-    id "com.jfrog.bintray" version "1.8.4"
-}
+apply plugin: 'com.android.library'
 
 ext {
     artifactId = "lazysodium-android"
-    groupId = "com.goterl.lazycode"
-    version = '4.2.0'
+    groupId = "io.github.MuntashirAkon"
+    version = '4.3.0'
     description = "Lazysodium (Android) makes it effortless for Android " +
             "developers to get started with Libsodium's cryptography."
     androidTestDir = "src/androidTest/java/com/goterl/lazycode/lazysodium"
@@ -29,12 +24,13 @@ group project.ext.groupId
 version = project.ext.version
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     buildToolsVersion "30.0.2"
     ndkVersion "21.3.6528147"
+
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 16
         versionName project.ext.version
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -86,7 +82,7 @@ dependencies {
     })
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13.1'
     implementation 'net.java.dev.jna:jna:5.6.0@aar'
 }
 
@@ -144,13 +140,6 @@ def deleteDir(File dir) {
 preBuild.dependsOn libsodium
 clean.dependsOn cleanLibsodium
 
-signing {
-    // This will use the GPG Agent
-    // to sign the jar
-  useGpgCmd()
-  sign configurations.archives
-}
-
 task sourcesJar(type: Jar) {
     classifier = 'sources'
     from android.sourceSets.main.java.srcDirs
@@ -166,96 +155,6 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     from javadoc.destinationDir
 }
 
-
-task signPom(type: Sign) {
-    sign project.file("$buildDir/publications/mavenJava/pom-default.xml")
-
-    // The signing plugin does not seem to notice
-    // it when the publications folder with the
-    // signature has been deleted. So we always
-    // create a new signature
-    outputs.upToDateWhen { false }
-}
-
 artifacts {
     archives sourcesJar, javadocJar
-}
-
-project.afterEvaluate {
-    publishing {
-        publications {
-            mavenJava(MavenPublication) {
-                groupId project.ext.groupId
-                artifactId project.ext.artifactId
-                version project.ext.version
-
-                artifact bundleReleaseAar
-                artifact sourcesJar
-                artifact javadocJar
-
-
-                pom.withXml {
-                    def root = asNode()
-                    root.appendNode('description', project.ext.description)
-                    root.appendNode('name', project.ext.artifactId)
-                    root.appendNode('url', 'https://github.com/terl/lazysodium-android')
-
-                    def scm = root.appendNode('scm')
-                    scm.appendNode("connection", "scm:git:git://github.com/terl/lazysodium-android.git")
-                    scm.appendNode("developerConnection", "scm:git:ssh://github.com/terl/lazysodium-android")
-                    scm.appendNode("url", "http://github.com/terl/lazysodium-android")
-
-                    def license = root.appendNode('licenses').appendNode('license')
-                    license.appendNode('name', 'Mozilla Public License, Version 2.0')
-                    license.appendNode('url', 'http://www.mozilla.org/MPL/2.0/index.txt')
-                    license.appendNode('distribution', 'repo')
-
-                    def developer = root.appendNode('developers').appendNode('developer')
-                    developer.appendNode('name', 'Terl Tech Ltd')
-                    developer.appendNode('email', 'hello@terl.co')
-
-                    def dependenciesNode = root.appendNode('dependencies')
-                    configurations.implementation.allDependencies.each {
-                        if (it.group != null && (it.name != null || "unspecified".equals(it.name)) && it.version != null) {
-                            def dependencyNode = dependenciesNode.appendNode('dependency')
-                            dependencyNode.appendNode('groupId', it.group)
-                            dependencyNode.appendNode('artifactId', it.name)
-                            dependencyNode.appendNode('version', it.version)
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-
-bintray {
-    user = findProperty("bintray.user")
-    key = findProperty("bintray.apiKey")
-    publications = ['mavenJava']
-    publish = true
-    configurations = ['archives']
-    pkg {
-        repo = 'lazysodium-maven'
-        name = project.ext.artifactId
-        userOrg = 'terl'
-        desc = project.ext.description
-        licenses = ['MPL-2.0']
-        issueTrackerUrl = "https://github.com/terl/lazysodium-android/issues"
-        vcsUrl = 'https://github.com/terl/lazysodium-android.git'
-
-        version {
-            name = project.ext.version
-            released = new Date()
-            vcsTag = project.ext.version
-        }
-    }
-}
-
-
-model {
-    tasks.publishMavenJavaPublicationToMavenLocal {
-        dependsOn project.tasks.withType(Sign)
-    }
 }
